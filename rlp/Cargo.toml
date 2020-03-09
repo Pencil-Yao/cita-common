@@ -10,5 +10,5 @@ authors = ["Parity Technologies <admin@parity.io>"]
 elastic-array = "0.9"
 cita-types = { path = "../cita-types" }
 lazy_static = "1.1"
-rustc-hex = "1.0"
+rustc-hex = "2.0"
 byteorder = "1.0"
