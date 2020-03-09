@@ -80,9 +80,9 @@ impl Transaction {
 
         // Build SignedTransaction
         let mut signed_tx = SignedTransaction::new();
-        signed_tx.set_signer(pubkey.to_vec());
+        signed_tx.set_signer(pubkey.as_ref().to_vec());
         let bytes: Vec<u8> = (&unverified_tx).try_into().unwrap();
-        signed_tx.set_tx_hash(bytes.crypt_hash().to_vec());
+        signed_tx.set_tx_hash(bytes.crypt_hash().as_ref().to_vec());
         signed_tx.set_transaction_with_sig(unverified_tx);
         signed_tx
     }
@@ -141,7 +141,7 @@ impl UnverifiedTransaction {
         let mut verify_tx_req = VerifyTxReq::new();
         verify_tx_req.set_valid_until_block(self.get_transaction().get_valid_until_block());
         // tx hash
-        verify_tx_req.set_hash(hash.to_vec());
+        verify_tx_req.set_hash(hash.as_ref().to_vec());
         verify_tx_req.set_crypto(self.get_crypto());
         verify_tx_req.set_signature(self.get_signature().to_vec());
         verify_tx_req.set_nonce(self.get_transaction().get_nonce().to_string());
@@ -158,7 +158,7 @@ impl UnverifiedTransaction {
 
         // unverified tx hash
         let tx_hash = self.crypt_hash();
-        verify_tx_req.set_tx_hash(tx_hash.to_vec());
+        verify_tx_req.set_tx_hash(tx_hash.as_ref().to_vec());
         verify_tx_req
     }
 }
@@ -176,14 +176,14 @@ impl SignedTransaction {
     pub fn verify_transaction(transaction: UnverifiedTransaction) -> Result<Self, H256> {
         let (public, tx_hash) = transaction.recover_public().map_err(|(hash, _)| hash)?;
         let mut signed_tx = SignedTransaction::new();
-        signed_tx.set_signer(public.to_vec());
-        signed_tx.set_tx_hash(tx_hash.to_vec());
+        signed_tx.set_signer(public.as_ref().to_vec());
+        signed_tx.set_tx_hash(tx_hash.as_ref().to_vec());
         signed_tx.set_transaction_with_sig(transaction);
         Ok(signed_tx)
     }
 
     pub fn crypt_hash(&self) -> H256 {
-        H256::from(self.tx_hash.as_slice())
+        H256::from_slice(self.tx_hash.as_slice())
     }
 
     pub fn from(&self) -> Address {
@@ -333,7 +333,7 @@ impl BlockHeader {
 
     pub fn crypt_hash_hex(&self) -> String {
         let bytes: Vec<u8> = self.try_into().unwrap();
-        bytes.crypt_hash().to_hex()
+        bytes.crypt_hash().as_ref().to_hex()
     }
 }
 

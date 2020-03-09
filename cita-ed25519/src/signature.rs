@@ -243,7 +243,7 @@ impl Sign for Signature {
         let is_valid = verify_detached(
             &EdSignature::from_slice(&sig).unwrap(),
             message.as_ref(),
-            &EdPublicKey::from_slice(&pubkey).unwrap(),
+            &EdPublicKey::from_slice(pubkey.as_ref()).unwrap(),
         );
         if !is_valid {
             Err(Error::InvalidSignature)
