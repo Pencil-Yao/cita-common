@@ -1,3 +1,4 @@
 [submodule "libproto/proto"]
 	path = libproto/proto
-	url = https://github.com/citahub/cita-proto.git
+	url = https://github.com/Pencil-Yao/cita-proto.git
+	branch = fix_up_p2p
